@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the World of Food!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>You are the MenuMaster</h1>
+        <button onclick="fetchAllMenus()">Show All Menus</button> <!-- New button added -->
+        <div id="app"></div>
+    </div>
+    <script src="{{ url_for('static', filename='react.js') }}"></script>
+    <script>
+        const fetchAllMenus = async () => {
+            try {
+                const response = await fetch(`/menus`);
+                const data = await response.json();
+                if (response.ok) {
+                    displayMenus(data);
+                } else {
+                    console.error(data.error);
+                }
+            } catch (error) {
+                console.error("Failed to fetch menus:", error);
+            }
+        };
+
+        const displayMenus = (menus) => {
+            const appDiv = document.getElementById('app');
+            appDiv.innerHTML = ''; // Clear previous content
+
+            for (const restaurant in menus) {
+                if (menus.hasOwnProperty(restaurant)) {
+                    const menuItems = menus[restaurant];
+                    const restaurantHeader = document.createElement('h2');
+                    restaurantHeader.textContent = restaurant;
+                    appDiv.appendChild(restaurantHeader);
+
+                    const menuList = document.createElement('ul');
+                    menuItems.forEach(item => {
+                        const menuItem = document.createElement('li');
+                        menuItem.textContent = `${item.type}: ${item.item} - ${item.price}`;
+                        menuList.appendChild(menuItem);
+                    });
+                    appDiv.appendChild(menuList);
+                }
+            }
+        };
+    </script>
+</body>
+<footer &reg; MASARA DEVS @ALX STUDENT 2024!></footer>
+</html>
+
