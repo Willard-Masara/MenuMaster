@@ -33,7 +33,7 @@ def init_db():
 
 def insert_menu_item(restaurant, item_type, item, price):
     conn = sqlite3.connect('menus.db')
-    cursor = conn.cursor()
+  cursor = conn.cursor()
     cursor.execute('''
         INSERT OR IGNORE INTO menus (restaurant, item_type, item, price)
         VALUES (?, ?, ?, ?)

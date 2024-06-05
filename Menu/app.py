@@ -1,9 +1,16 @@
+#!/usr/bin/python3
+# this is the server for our MenuMaster tool, flask based
+
 from flask import Flask, render_template, jsonify
 import sqlite3
 
 app = Flask(__name__)
 
 def get_all_menus_from_db():
+    '''
+    Here we immediately connect to the db to get all menus that have been dumped there by the scaper script
+    We can start a separate instance with the db to implement CRUD
+    '''
     conn = sqlite3.connect('menus.db')
     cursor = conn.cursor()
     cursor.execute('SELECT restaurant, item_type, item, price FROM menus')
@@ -22,6 +29,9 @@ def get_all_menus_from_db():
 
 @app.route('/')
 def index():
+    '''
+    We simply fetch an html for the home page
+    '''
     return render_template('index.html')
 
 @app.route('/menus', methods=['GET'])
